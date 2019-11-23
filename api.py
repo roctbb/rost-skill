@@ -5,10 +5,13 @@ from __future__ import unicode_literals
 # Импортируем модули для работы с JSON и логами.
 import json
 import logging
+import random
 
 # Импортируем подмодули Flask для запуска веб-сервиса.
 from flask import Flask, request
 app = Flask(__name__)
+
+aneks = open('proved.txt').read().split('\n\n')
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -53,7 +56,7 @@ def handle_dialog(req, res):
         # Обрабатываем ответ пользователя.
         text = req['request']['original_utterance']
         if 'трави' in text or ('расскажи' in text and 'анек' in text):
-            res['response']['text'] = 'Купил мужик шляпу, а она ему как раз!'
+            res['response']['text'] = random.choice(aneks)
             return
 
         # Если нет, то убеждаем его купить слона!
