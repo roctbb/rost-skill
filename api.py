@@ -46,25 +46,13 @@ def handle_dialog(req, res):
     user_id = req['session']['user_id']
 
     if req['session']['new']:
-        # Это новый пользователь.
-        # Инициализируем сессию и поприветствуем его.
-
-        sessionStorage[user_id] = {
-            'suggests': [
-                "Не хочу.",
-                "Не буду.",
-                "Отстань!",
-            ]
-        }
 
         res['response']['text'] = 'Я вас категорически приветствую'
         return
     else:
         # Обрабатываем ответ пользователя.
-        if req['request']['original_utterance'].lower() in [
-            'анек', 'анекдот'
-        ]:
-            # Пользователь согласился, прощаемся.
+        text = req['request']['original_utterance']
+        if 'трави' in text or ('расскажи' in text and 'анек' in text):
             res['response']['text'] = 'Купил мужик шляпу, а она ему как раз!'
             return
 
