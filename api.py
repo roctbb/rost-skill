@@ -12,6 +12,7 @@ from flask import Flask, request
 app = Flask(__name__)
 
 aneks = open('proved.txt').read().split('\n\n')
+not_found = ['Друуузья, не очень вас понял, к сожалению...', 'Я глуховат, повторите...',  'Что?']
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -50,16 +51,27 @@ def handle_dialog(req, res):
 
     if req['session']['new']:
 
-        res['response']['text'] = 'Я вас категорически приветствую'
+        res['response']['text'] = 'Добрый вечер!'
         return
     else:
         # Обрабатываем ответ пользователя.
         text = req['request']['original_utterance']
-        if 'трави' in text or ('расскажи' in text and 'анек' in text):
+        if 'трави' in text or 'анек' in text:
             res['response']['text'] = random.choice(aneks)
             return
-
+        if 'как сделать' in text:
+            res['response']['text'] = "Посмотри на гикклассе"
+            return
+        if 'не работает' in text:
+            res['response']['text'] = "Попробуй выключить и включить"
+            return
+        if 'свин' in text or 'поросенок' in text:
+            res['response']['text'] = "Свинья - офигенная тема!"
+            return
+        if 'свин' in text or 'поросенок' in text:
+            res['response']['text'] = "Свинья - офигенная тема!"
+            return
         # Если нет, то убеждаем его купить слона!
-        res['response']['text'] = 'Не очень понял, к сожалению...'
+        res['response']['text'] = random.choice(not_found)
 
 app.run(debug=False, host='0.0.0.0', port=5000, ssl_context='adhoc')
