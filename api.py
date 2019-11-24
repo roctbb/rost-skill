@@ -6,13 +6,17 @@ from __future__ import unicode_literals
 import json
 import logging
 import random
+from pymorphy2 import MorphAnalyzer
 
 # Импортируем подмодули Flask для запуска веб-сервиса.
 from flask import Flask, request
 app = Flask(__name__)
 
 aneks = open('proved.txt').read().split('\n\n')
+full = open('proved.txt').read().split('<|endoftext|>')
+random_aneks = open('proved.txt').read().split('\n\n')
 not_found = ['Друуузья, не очень вас понял, к сожалению...', 'Я глуховат, повторите...',  'Что?']
+analyzer = MorphAnalyzer()
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -56,7 +60,24 @@ def handle_dialog(req, res):
     else:
         # Обрабатываем ответ пользователя.
         text = req['request']['original_utterance']
-        if 'трави' in text or 'анек' in text:
+
+        if 'про' in text:
+            tokens = list(req['request']['nlu']['tokens'])
+
+            pos = tokens.index('про')
+            try:
+                query = tokens[pos + 1]
+                normal = analyzer.parse(query)[0].normal_form
+                matching = list(filter(lambda x: normal in x, full))
+                res['response']['text'] = random.choice(matching)
+            except:
+                res['response']['text'] = "что-то не припомню ничего такого"
+            return
+
+        if 'свой' in text or 'сам' in text or 'придумай' in text:
+            res['response']['text'] = random.choice(random_aneks)
+            return
+        if 'трави' in text or 'еще' in text or 'давай' in text or 'анек' in text:
             res['response']['text'] = random.choice(aneks)
             return
         if 'как сделать' in text:
