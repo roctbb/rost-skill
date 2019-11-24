@@ -10,25 +10,25 @@ from pymorphy2 import MorphAnalyzer
 
 # Импортируем подмодули Flask для запуска веб-сервиса.
 from flask import Flask, request
+
 app = Flask(__name__)
 
-aneks = list(filter(lambda x:len(x)< 1024,open('proved.txt').read().split('\n\n')))
-full = list(filter(lambda x:len(x)< 1024,open('all.txt').read().split('<|endoftext|>')))
-random_aneks = list(filter(lambda x:len(x)< 1024,open('proved.txt').read().split('\n\n')))
-not_found = ['Друуузья, не очень вас понял, к сожалению...', 'Я глуховат, повторите...',  'Что?']
+aneks = list(filter(lambda x: len(x) < 1024, open('proved.txt').read().split('\n\n')))
+full = list(filter(lambda x: len(x) < 1024, open('all.txt').read().split('<|endoftext|>')))
+random_aneks = list(filter(lambda x: len(x) < 1024, open('proved.txt').read().split('\n\n')))
+not_found = ['Друуузья, не очень вас понял, к сожалению...', 'Я глуховат, повторите...', 'Что?']
 analyzer = MorphAnalyzer()
-
 
 logging.basicConfig(level=logging.DEBUG)
 
 # Хранилище данных о сессиях.
 sessionStorage = {}
 
+
 # Задаем параметры приложения Flask.
 @app.route("/", methods=['POST'])
-
 def main():
-# Функция получает тело запроса и возвращает ответ.
+    # Функция получает тело запроса и возвращает ответ.
     logging.info('Request: %r', request.json)
 
     response = {
@@ -48,6 +48,7 @@ def main():
         ensure_ascii=False,
         indent=2
     )
+
 
 # Функция для непосредственной обработки диалога.
 def handle_dialog(req, res):
@@ -91,5 +92,6 @@ def handle_dialog(req, res):
             return
         # Если нет, то убеждаем его купить слона!
         res['response']['text'] = random.choice(not_found)
+
 
 app.run(debug=False, host='0.0.0.0', port=5000, ssl_context='adhoc')
