@@ -62,6 +62,12 @@ def handle_dialog(req, res):
         # Обрабатываем ответ пользователя.
         text = req['request']['original_utterance']
 
+        if 'как дела' in text:
+            res['response']['text'] = 'хорошо'
+            return
+        if 'что делаешь' in text:
+            res['response']['text'] = 'вспоминаю анекдот'
+            return
         if 'про' in text:
             tokens = list(req['request']['nlu']['tokens'])
 
