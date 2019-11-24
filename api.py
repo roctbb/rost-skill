@@ -12,10 +12,9 @@ from pymorphy2 import MorphAnalyzer
 from flask import Flask, request
 app = Flask(__name__)
 
-aneks = open('proved.txt').read().split('\n\n')
-full = open('all.txt').read().split('<|endoftext|>')
-random_aneks = open('proved.txt').read().split('\n\n')
-random_aneks = list(filter(lambda x:len(x)< 1024, random_aneks))
+aneks = list(filter(lambda x:len(x)< 1024,open('proved.txt').read().split('\n\n')))
+full = list(filter(lambda x:len(x)< 1024,open('all.txt').read().split('<|endoftext|>')))
+random_aneks = list(filter(lambda x:len(x)< 1024,open('proved.txt').read().split('\n\n')))
 not_found = ['Друуузья, не очень вас понял, к сожалению...', 'Я глуховат, повторите...',  'Что?']
 analyzer = MorphAnalyzer()
 
@@ -86,9 +85,6 @@ def handle_dialog(req, res):
             return
         if 'не работает' in text:
             res['response']['text'] = "Попробуй выключить и включить"
-            return
-        if 'свин' in text or 'поросенок' in text:
-            res['response']['text'] = "Свинья - офигенная тема!"
             return
         if 'свин' in text or 'поросенок' in text:
             res['response']['text'] = "Свинья - офигенная тема!"
