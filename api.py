@@ -15,6 +15,7 @@ app = Flask(__name__)
 aneks = open('proved.txt').read().split('\n\n')
 full = open('all.txt').read().split('<|endoftext|>')
 random_aneks = open('proved.txt').read().split('\n\n')
+random_aneks = list(filter(lambda x:len(x)< 1024, random_aneks))
 not_found = ['Друуузья, не очень вас понял, к сожалению...', 'Я глуховат, повторите...',  'Что?']
 analyzer = MorphAnalyzer()
 
